@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block title %}
+	Ejemplo Crud
+{% endblock %}
+
+{% block content %}
+<br><div class="row">
+    
+    <div class="col-md-12 order-md-1">
+      <h4 class="mb-3">Insertar Usuario</h4>
+
+      <div class="alert alert-{{ message[1] }} alert-dismissable" style="display: {{ message[0] }}">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <center><strong>{{ message[2] }}</strong></center>
+      </div>
+
+      {% if 'existEmail' in session %}
+        <div class="alert alert-warning alert-dismissable" >
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+          <center><strong>El correo ya existe</strong></center>
+        </div>
+        {{ session.pop('existEmail',None) }}
+      {% endif %}
+
+      {% if 'existUser' in session %}
+        <div class="alert alert-warning alert-dismissable" >
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+          <center><strong>El Usuario Ya Existe</strong></center>
+        </div>
+        {{ session.pop('existUser',None) }}
+      {% endif %}
+
+      <form class="needs-validation" method="post" enctype="multipart/form-data">
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="firstName">Correo</label>
+            <input type="email" class="form-control" name="email" placeholder="Correo" required>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="lastName">Usuario</label>
+            <input type="text" class="form-control" name="user" placeholder="Usuario" required>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="email">Contraseña</label>
+            <input type="password" class="form-control" name="password" placeholder="contraseña">
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label for="formFileLg">Imagen</label>
+            <input class="form-control" id="formFileLg" type="file" name="image" accept="image/*" required>
+          </div>
+        </div>
+
+        <hr class="mb-4">
+        <button class="btn btn-primary btn-lg btn-block" type="submit">Insertar</button>
+      </form>
+
+    </div>
+  </div><br>
+{% endblock %}
+

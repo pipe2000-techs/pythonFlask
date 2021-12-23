@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+
+{% block title %}
+	Datos - Ejemplo Crud
+{% endblock %}
+
+{% block content %}
+<br><div class="row"> 
+		<h4 class="mb-3">Registros</h4>
+		{% if 'data' in session %}
+			<form class="table table-striped" method="post" action="/update" enctype="multipart/form-data">
+				<div class="form-row">
+
+					<input type="hidden" name="id" value="{{ session['data'][0] }}">
+
+					<div class="col-md-3 mb-3">
+						<label for="validationDefault01">Correo</label>
+						<input type="email" class="form-control" id="validationDefault01" placeholder="Correo" name="email" value="{{ session['data'][1] }}" required>
+					</div>
+					<div class="col-md-3 mb-3">
+						<label for="validationDefault02">Usuario</label>
+						<input type="text" class="form-control" id="validationDefault02" placeholder="Usuario" name="username" value="{{ session['data'][2] }}" required>
+					</div>
+					<div class="col-md-3 mb-3">
+						<label for="validationDefault03">Contraseña</label>
+						<input type="password" class="form-control" id="validationDefault03" placeholder="contraseña" name="password" value="{{ session['data'][3] }}" required>
+					</div>
+					<div class="col-md-3 mb-3">
+						<label for="validationDefault02">Imagen</label>
+						<input type="file" class="form-control" name="image" accept="image/*">
+						<input type="hidden" name="image" value="{{ session['data'][4] }}">
+					</div>
+				</div>
+				<button class="btn btn-primary" type="submit">Actualizar</button>
+				<a class="btn btn-danger" href="/cancelUpdate">Cancelar</a>
+			</form>
+		{% endif %}
+		
+		{% if 'errorUpdate' in session %}
+			<div class="alert alert-danger alert-dismissable table table-striped">
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+				<center><strong>Error!</strong>{{ session['errorUpdate'] }}</center>
+			</div>
+			{{ session.pop('errorUpdate',None) }}
+		{% endif %}
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th scope="col">#</th>
+					<th scope="col">Correo</th>
+					<th scope="col">Usuario</th>
+					<th scope="col">Contraseña</th>
+					<th scope="col">Imagen</th>
+					<th scope="col">Actualizar</th>
+					<th scope="col">Eliminar</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for usuaro in usuarios %}
+					<form method="post">
+						<tr>
+							<th scope="row">{{ usuaro['id'] }}</th>
+							<input type="hidden" name="id" value="{{ usuaro['id'] }}">
+
+							<td>{{ usuaro['email'] }}</td>
+							<input type="hidden" name="email" value="{{ usuaro['email'] }}">
+
+							<td>{{ usuaro['username'] }}</td>
+							<input type="hidden" name="username" value="{{ usuaro['username'] }}">
+
+							<td>{{ usuaro['password'] }}</td>
+							<input type="hidden" name="password" value="{{ usuaro['password'] }}">
+
+							<td><img src="{{ url_for('static', filename='./img/'+usuaro['image']) }}" class="img-thumbnail" width="200"></td>
+							<input type="hidden" name="image" value="{{ usuaro['image'] }}">
+							
+							<td><button class="btn btn-warning" type="submit" name="update">Actualisar</button></td>
+							<td>
+								<div class="btn-group">
+									<button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										<i class="bi bi-trash-fill"></i>
+									</button>
+									<div class="dropdown-menu">
+										<a class="dropdown-item" href="/delete/{{ usuaro['id'] }}/{{ usuaro['image'] }}">Eliminar</a>
+									</div>
+								</div>
+							</td>
+						</tr>
+					</form>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div><br>
+{% endblock %}
